@@ -10,7 +10,7 @@ entity mULA is
 	Port ( A : in  STD_LOGIC_VECTOR(3 downto 0);
           B : in  STD_LOGIC_VECTOR(3 downto 0);
 			 OP: in  STD_LOGIC_VECTOR(3 downto 0);
-          X : out  STD_LOGIC_VECTOR(5 downto 0));
+          X : out  STD_LOGIC_VECTOR(3 downto 0));
 end mULA;
 
 architecture Behavioral of mULA is
@@ -97,5 +97,4 @@ begin
 				X_ADD 		WHEN "0110",
 				X_SUB 		WHEN "0111",
 				"111111" 	WHEN OTHERS;
-
 end Behavioral;

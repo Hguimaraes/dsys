@@ -12,16 +12,18 @@ entity mWRITER is
            numOP : in  STD_LOGIC;
            BTN_RESET : in  STD_LOGIC;
            CLOCK : in  STD_LOGIC;
-           LED_OUT : out  STD_LOGIC);
+           LED_OUT : out  STD_LOGIC;
+			  outMod: out STD_LOGIC);
 end mWRITER;
 
 architecture Behavioral of mWRITER is
 
 -- Estados da máquina de Leitura
 type STATE_TYPE is ( 
-	sN1,   	-- Exibir Número A
-	sN2,   	-- Exibir Número B
-	sN3   	-- Exibir Resultado numA OP numB
+	sNA,   	-- Display on the LEDs numA
+	sNB,   	-- Display on the LEDs numB
+	sNOP,   	-- Display on the LEDs numOP
+	sNULL		-- NULL State
 );
 SIGNAL state: STATE_TYPE;
 
