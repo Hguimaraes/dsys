@@ -19,7 +19,11 @@ entity mREADER is
            numA : out  STD_LOGIC_VECTOR(3 downto 0);
            numB : out  STD_LOGIC_VECTOR(3 downto 0);
            numOP : out  STD_LOGIC_VECTOR(3 downto 0);
-			  outMod: out STD_LOGIC);
+			  
+			  -- Control state
+			  rState: out STD_LOGIC;
+			  opState: in STD_LOGIC;
+			  wState: in STD_LOGIC);
 end mREADER;
 
 architecture Behavioral of mREADER is
@@ -38,10 +42,11 @@ BEGIN
 	BEGIN
 		-- Evento de pressionar botão RESET
 		IF (BTN_RESET = '1') THEN 
-			state <= sNULL;
+			state <= sA;
 		ELSE
-			IF (CLOCK'EVENT AND CLOCK = '1') THEN
-				-- Read State Machine implementation
+			IF (CLOCK'EVENT AND CLOCK = '1' 
+				AND wState = '0' AND opState = '0') THEN
+				-- Reader State Machine implementation
 				CASE state IS
 					-- READ Number A
 					WHEN sA =>
@@ -61,12 +66,12 @@ BEGIN
 					WHEN sOP =>
 						numOP <= SWT_IN;
 						IF(BTN_A = '1') THEN
-							state <= sN1;
+							state <= sNULL;
 						END IF;
 
 					-- Null state and finish this state machine
 					WHEN sNULL =>
-						outMod <= '1';
+						rState <= '1';
 						state <= state;
 				END CASE;
 			END IF;
