@@ -80,6 +80,15 @@ SIGNAL c_in: STD_LOGIC;
 SIGNAL c_out: STD_LOGIC;
 SIGNAL Brw: STD_LOGIC;
 
+SIGNAL X_AND: STD_LOGIC_VECTOR(3 downto 0);
+SIGNAL X_NAND: STD_LOGIC_VECTOR(3 downto 0);
+SIGNAL X_OR: STD_LOGIC_VECTOR(3 downto 0);
+SIGNAL X_XOR: STD_LOGIC_VECTOR(3 downto 0);
+SIGNAL X_NOT: STD_LOGIC_VECTOR(3 downto 0);
+SIGNAL X_2CMPLMT: STD_LOGIC_VECTOR(3 downto 0);
+SIGNAL X_ADD: STD_LOGIC_VECTOR(3 downto 0);
+SIGNAL X_SUB: STD_LOGIC_VECTOR(3 downto 0);
+
 begin
 	-- Set cin as 0
 	c_in <= '0';
@@ -89,9 +98,9 @@ begin
 	OP02: mOR port map(A,B,X_OR);
 	OP03: mXOR port map(A,B,X_XOR);
 	OP04: mNOT port map(A,X_NOT);
-	OP05: m2CMPLMT port map(A,B,X_2CMPLMT);
+	OP05: m2CMPLMT port map(A, X_2CMPLMT, c_out);
 	OP06: mADD port map(A,B,c_in,X_ADD,c_out);
-	OP07: mSUB port map(A,B,X_SUB, Brw);
+	OP07: mSUB port map(A, B, X_SUB, Brw);
 			
 	-- Select what operation to perform
 	PROCESS(BTN_RESET, CLOCK)

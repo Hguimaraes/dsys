@@ -10,7 +10,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity m2CMPLMT is
     Port (A : in  STD_LOGIC_VECTOR(3 downto 0);
           X : out  STD_LOGIC_VECTOR(3 downto 0);
-			 COUT: out STD_LOGIC_VECTOR(3 downto 0));
+			 COUT: out STD_LOGIC);
 end m2CMPLMT;
 
 architecture Behavioral of m2CMPLMT is
@@ -20,7 +20,7 @@ signal notA:std_logic_vector(3 downto 0);
 -- Componente de Negação de um vetor de 4 Bits
 component mNOT
 	port(A: in std_logic_vector(3 downto 0);
-			X: out std_logic(3 downto 0));
+			X: out std_logic_vector(3 downto 0));
 end component;
 
 -- Componente para somar +1 ao vetor negado e obter o complemento a 2

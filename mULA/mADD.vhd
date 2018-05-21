@@ -8,7 +8,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- 4-bit adder
 entity mADD is
-    Port ( A,B : in  STD_LOGIC_VECTOR(3 downto 0);
+    Port ( A : in  STD_LOGIC_VECTOR(3 downto 0);
+			  B : in  STD_LOGIC_VECTOR(3 downto 0);
            c_in : in  STD_LOGIC;
            X : out  STD_LOGIC_VECTOR(3 downto 0);
            c_out : out  STD_LOGIC);

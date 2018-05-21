@@ -16,8 +16,7 @@ architecture Behavioral of mNAND is
 
 begin
 	-- NAND OPERATION
-	X <= A AND B;
-	X <= (NOT X);
+	X <= NOT (A AND B);
 
 end Behavioral;
 
