@@ -10,6 +10,7 @@ entity mULA is
 	Port ( A : in  STD_LOGIC_VECTOR(3 downto 0);
           B : in  STD_LOGIC_VECTOR(3 downto 0);
 			 OP: in  STD_LOGIC_VECTOR(3 downto 0);
+			 BTN_RESET: in STD_LOGIC;
           CLOCK: in STD_LOGIC;
 			 X : out  STD_LOGIC_VECTOR(3 downto 0);
 			 
@@ -93,21 +94,25 @@ begin
 	OP07: mSUB port map(A,B,X_SUB, Brw);
 			
 	-- Select what operation to perform
-	PROCESS(CLOCK)
+	PROCESS(BTN_RESET, CLOCK)
 	BEGIN
-		IF(CLOCK'EVENT AND CLOCK = '1' AND rState = '1' AND wState = '0') THEN
-			WITH OP SELECT 
-				X	<= X_AND 		WHEN "0000",
-						X_NAND 		WHEN "0001",
-						X_OR 			WHEN "0010",
-						X_XOR 		WHEN "0011",
-						X_NOT 		WHEN "0100",
-						X_2CMPLMT	WHEN "0101",
-						X_ADD 		WHEN "0110",
-						X_SUB 		WHEN "0111",
-						"111111" 	WHEN OTHERS;
-			
-			opState <= '1';
+		IF (BTN_RESET = '1') THEN
+			opState <= '0';
+		ELSE
+			IF(CLOCK'EVENT AND CLOCK = '1' AND rState = '1' AND wState = '0') THEN
+				WITH OP SELECT 
+					X	<= X_AND 		WHEN "0000",
+							X_NAND 		WHEN "0001",
+							X_OR 			WHEN "0010",
+							X_XOR 		WHEN "0011",
+							X_NOT 		WHEN "0100",
+							X_2CMPLMT	WHEN "0101",
+							X_ADD 		WHEN "0110",
+							X_SUB 		WHEN "0111",
+							"111111" 	WHEN OTHERS;
+				
+				opState <= '1';
+			END IF;
 		END IF;
 	END PROCESS;
 end Behavioral;

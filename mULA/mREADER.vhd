@@ -43,6 +43,7 @@ BEGIN
 		-- Evento de pressionar botão RESET
 		IF (BTN_RESET = '1') THEN 
 			state <= sA;
+			rState <= '1';
 		ELSE
 			IF (CLOCK'EVENT AND CLOCK = '1' 
 				AND wState = '0' AND opState = '0') THEN
@@ -71,7 +72,6 @@ BEGIN
 
 					-- Null state and finish this state machine
 					WHEN sNULL =>
-						rState <= '1';
 						state <= state;
 				END CASE;
 			END IF;
