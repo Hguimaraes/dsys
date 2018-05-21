@@ -18,17 +18,18 @@ entity mREADER is
 			  -- Output variables to share in the State machine
            numA : out  STD_LOGIC_VECTOR(3 downto 0);
            numB : out  STD_LOGIC_VECTOR(3 downto 0);
-           numOP : out  STD_LOGIC_VECTOR(3 downto 0));
+           numOP : out  STD_LOGIC_VECTOR(3 downto 0);
+			  outMod: out STD_LOGIC);
 end mREADER;
 
 architecture Behavioral of mREADER is
 
 -- States from this module
 type STATE_TYPE is ( 
-	sA,   -- number A
-	sB,   -- number B
-	sOP,   -- Operation
-	sN1
+	sA,   	-- number A
+	sB,   	-- number B
+	sOP,   	-- Operation
+	sNULL		-- NULL State
 );
 SIGNAL state: STATE_TYPE;
 
@@ -37,33 +38,38 @@ BEGIN
 	BEGIN
 		-- Evento de pressionar botão RESET
 		IF (BTN_RESET = '1') THEN 
-			state <= sA;
+			state <= sNULL;
 		ELSE
-		-- Máquina de Estados
-			CASE state IS
-				-- Input do número A
-				WHEN sA =>
-					numA <= SWT_IN;
-					IF(BTN_A = '1') THEN
-						state <= sB;
-					END IF;
-				-- Input do número B
-				WHEN sB =>
-					numB <= SWT_IN;
-					IF(BTN_B = '1') THEN
-						state <= sOP;
-					END IF;
-				-- Input da Operação e realização da conta
-				WHEN sOP =>
-					numOP <= SWT_IN;
-					IF(BTN_A = '1') THEN
-						state <= sN1;
-					END IF;
-				-- Tou de bob
-				WHEN sN1 =>
-					state <= state;	
-			END CASE;				
+			IF (CLOCK'EVENT AND CLOCK = '1') THEN
+				-- Read State Machine implementation
+				CASE state IS
+					-- READ Number A
+					WHEN sA =>
+						numA <= SWT_IN;
+						IF(BTN_A = '1') THEN
+							state <= sB;
+						END IF;
+
+					-- READ Number B
+					WHEN sB =>
+						numB <= SWT_IN;
+						IF(BTN_B = '1') THEN
+							state <= sOP;
+						END IF;
+
+					-- READ what operation to perform
+					WHEN sOP =>
+						numOP <= SWT_IN;
+						IF(BTN_A = '1') THEN
+							state <= sN1;
+						END IF;
+
+					-- Null state and finish this state machine
+					WHEN sNULL =>
+						outMod <= '1';
+						state <= state;
+				END CASE;
+			END IF;
 		END IF;
 	END PROCESS;
-
 END Behavioral;
