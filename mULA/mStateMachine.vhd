@@ -44,7 +44,7 @@ component mULA is
           B : in  STD_LOGIC_VECTOR(3 downto 0);
 			 OP: in  STD_LOGIC_VECTOR(3 downto 0);
 			 CLOCK: in STD_LOGIC;
-			 X : out  STD_LOGIC_VECTOR(5 downto 0);
+			 X : out  STD_LOGIC_VECTOR(3 downto 0);
 			 
 			 -- Control state
 			 rState: in STD_LOGIC;
@@ -55,12 +55,12 @@ end component;
 -- WRITER component
 component mWRITER is
 	Port ( 	-- Shared Variables with State Machine
-				numA : in  STD_LOGIC;
-				numB : in  STD_LOGIC;
-				numOP : in  STD_LOGIC;
+				numA : in  STD_LOGIC_VECTOR(3 downto 0);
+				numB : in  STD_LOGIC_VECTOR(3 downto 0);
+				resOP : in  STD_LOGIC_VECTOR(3 downto 0);
 				BTN_RESET : in  STD_LOGIC;
 				CLOCK : in  STD_LOGIC;
-				LED_OUT : out  STD_LOGIC;
+				LED_OUT : out  STD_LOGIC_VECTOR(7 downto 0);
 				
 				-- Control state
 				rState: in STD_LOGIC;
@@ -88,6 +88,6 @@ begin
 		CLOCK, resOP, rState, opState, wState);
 	
 	-- Write operation on the screen
-	C02: mWRITER port map(numA, numB, numOP, resOP, BTN_RESET,
+	C02: mWRITER port map(numA, numB, resOP, BTN_RESET,
 			CLOCK, LED_OUT, rState, opState, wState);
 end Behavioral;

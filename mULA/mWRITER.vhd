@@ -7,9 +7,8 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity mWRITER is
-    Port ( numA : in  STD_LOGIC;
-           numB : in  STD_LOGIC;
-           numOP : in  STD_LOGIC;
+    Port ( numA : in  STD_LOGIC_VECTOR(3 downto 0);
+           numB : in  STD_LOGIC_VECTOR(3 downto 0);
 			  resOP: in STD_LOGIC_VECTOR(3 downto 0);
            BTN_RESET : in  STD_LOGIC;
            CLOCK : in  STD_LOGIC;
@@ -35,16 +34,16 @@ SIGNAL counter: integer := 0;
 SIGNAL PTS: integer := 100000000;
 
 begin
-	PROCESS (BTN_A, BTN_B, BTN_RESET, CLOCK)
+	PROCESS (BTN_RESET, CLOCK)
 	BEGIN
 		IF (BTN_RESET = '1') THEN 
 			state <= sNULL;
 			wState <= '0';
 		ELSE
-			IF (CLK'EVENT AND CLK='1' AND rState = '1' AND opState = '1') THEN
+			IF (CLOCK'EVENT AND CLOCK='1' AND rState = '1' AND opState = '1') THEN
 				CASE state IS
 					-- Print the number A
-					WHEN sN1 =>
+					WHEN sNA =>
 						IF (counter = PTS) THEN
 							-- SET Result
 							LED_OUT <= "0000" & numA;
@@ -54,14 +53,14 @@ begin
 							LED_OUT(1) <= '1';
 							
 							-- Control state and frequency divisor
-							state <= sN2;
+							state <= sNB;
 							counter <= 0;
 						ELSE
 							counter <= counter + 1;
 						END IF;
 						
 					-- Print the number A
-					WHEN sN2 =>
+					WHEN sNB =>
 						IF (counter = PTS) THEN
 							-- SET Result
 							LED_OUT <= "0000" & numB;
@@ -71,24 +70,24 @@ begin
 							LED_OUT(1) <= '0';
 							
 							-- Control state and frequency divisor
-							state <= sN3;
+							state <= sNOP;
 							counter <= 0;
 						ELSE
 							counter <= counter + 1;
 						END IF;
 						
 					-- Input da Operação e realização da conta
-					WHEN sN3 =>
+					WHEN sNOP =>
 						IF (counter = PTS) THEN
 							-- SET Result
 							LED_OUT <= "0000" & resOP;
 							
-							-- Indicate number A
+							-- Indicate resOP
 							LED_OUT(0) <= '1';
 							LED_OUT(1) <= '1';
 							
 							-- Control state and frequency divisor
-							state <= sN1;
+							state <= sNA;
 							counter <= 0;
 						ELSE
 							counter <= counter + 1;
